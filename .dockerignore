@@ -1,0 +1,9 @@
+# Ignorar archivos innecesarios
+*.tmp
+*.log
+venv/
+__pycache__/
+db_data/
+node_modules/
+.DS_Store
+Thumbs.db

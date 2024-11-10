@@ -2,7 +2,6 @@ from datetime import date
 from enum import Enum
 from typing import Optional
 from pydantic import BaseModel
-from uuid import UUID
 
 # Clases de los modelos de la base de datos    
 class Estado(str, Enum):
@@ -18,7 +17,17 @@ class Prioridad(str, Enum):
 class Usuario(BaseModel):
     name: str
     email: str
-    password: str
+    
+class Usuario_db(Usuario):
+    hashed_password: str
+    
+class Token(BaseModel):
+    access_token: str
+    token_type: str
+
+
+class TokenData(BaseModel):
+    username: str | None = None
     
 class TaskCreate(BaseModel):
     title: str

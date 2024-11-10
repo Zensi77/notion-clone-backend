@@ -1,4 +1,4 @@
-from datetime import datetime
+from datetime import date
 from enum import Enum
 from typing import Optional
 from pydantic import BaseModel
@@ -7,7 +7,7 @@ from uuid import UUID
 # Clases de los modelos de la base de datos    
 class Estado(str, Enum):
     NO_COMENZADO = "No comenzado"
-    EN_PROGRESO = "En Progreso"
+    EN_PROGRESO = "En progreso"
     TERMINADA = "Completado"
         
 class Prioridad(str, Enum):
@@ -16,22 +16,26 @@ class Prioridad(str, Enum):
     ALTA = "Alta"
     
 class Usuario(BaseModel):
-    id: UUID
     name: str
     email: str
     password: str
     
-class Task(BaseModel):
-    id: UUID
+class TaskCreate(BaseModel):
     title: str
     description: str
     state: Estado
     prioridad: Prioridad
-    fecha_inicio: datetime
-    fecha_fin: Optional[datetime]
-    user_id: UUID
+    fecha_inicio: date
+    fecha_fin: Optional[date] = None
+    user_id: str
+    
+class Task(TaskCreate):
+    id: str 
+
+    class Config: # Esto hace que el modelo de datos se pueda convertir a un diccionario
+        from_attributes = True
             
-from sqlalchemy import Column, Integer, String, Enum, ForeignKey, DateTime, func, CHAR
+from sqlalchemy import Column, Date, String, Enum, ForeignKey, func, CHAR
 from sqlalchemy.orm import relationship
 from uuid import uuid4
 from app.db.db import Base
@@ -53,8 +57,8 @@ class Tareas(Base):
     description = Column(String(150))
     state = Column(Enum(Estado), default=Estado.NO_COMENZADO)
     prioridad = Column(Enum(Prioridad), default=Prioridad.BAJA)
-    fecha_inicio = Column(DateTime, default=func.now())
-    fecha_fin = Column(DateTime)
+    fecha_inicio = Column(Date, default=func.now())
+    fecha_fin = Column(Date)
     user_id = Column(CHAR(36), ForeignKey('Usuarios.id'))
     
     user = relationship('Usuarios', back_populates='tareas')

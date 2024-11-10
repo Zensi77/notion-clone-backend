@@ -1,29 +1,23 @@
--- Usuarios con contraseñas hasheadas
-INSERT INTO Usuarios (id, name, email, password) VALUES
-('a8b8c8d8-e8f8-11ec-b939-0242ac120002', 'Alice Johnson', 'alice.johnson@example.com', '$2b$12$ql6HgA3Ax23FdWti7lwShOaQCT4PCWYZCRjTxujgYZX82UMHh2uEu'),
-('b9c9d9e9-f9g9-11ec-b939-0242ac120002', 'Bob Smith', 'bob.smith@example.com', '$2b$12$4EOO4pBOWt9ZmF72FcUNbOToxISZV6IFDk.Ls9RHTtR5pRHhfsXTa'),
-('c0d0e0f0-g0h0-11ec-b939-0242ac120002', 'Charlie Brown', 'charlie.brown@example.com', '$2b$12$V8YrKBHnW4HK2fSyVj/RTOgfOOWHuRUnqL61cI5zTysZmny.PZcXm');
-
 -- Tareas para Alice Johnson
 INSERT INTO Tareas (id, title, description, state, prioridad, fecha_inicio, fecha_fin, user_id) VALUES
-('d2d3d3e3-f5g5-11ec-b939-0242ac120002', 'Submit report', 'Submit the monthly sales report', 'NO_COMENZADO', 'ALTA', '2024-11-10 09:00:00', NULL, 'a8b8c8d8-e8f8-11ec-b939-0242ac120002'),
-('e3f4g5h6-h4i4-11ec-b939-0242ac120002', 'Client meeting', 'Meet with client to discuss project goals', 'EN_PROGRESO', 'MEDIA', '2024-11-08 14:00:00', NULL, 'a8b8c8d8-e8f8-11ec-b939-0242ac120002'),
-('f5g6h7j8-j5k5-11ec-b939-0242ac120002', 'Team lunch', 'Arrange team lunch for Friday', 'TERMINADA', 'BAJA', '2024-11-05 12:00:00', '2024-11-05 13:00:00', 'a8b8c8d8-e8f8-11ec-b939-0242ac120002'),
-('g7h8i9j0-k5l5-11ec-b939-0242ac120002', 'Budget review', 'Review budget allocations for Q4', 'NO_COMENZADO', 'ALTA', '2024-11-11 10:00:00', NULL, 'a8b8c8d8-e8f8-11ec-b939-0242ac120002'),
-('h9i0j1k2-l5m5-11ec-b939-0242ac120002', 'Send invoices', 'Send outstanding invoices to clients', 'EN_PROGRESO', 'MEDIA', '2024-11-15 09:00:00', NULL, 'a8b8c8d8-e8f8-11ec-b939-0242ac120002');
+('d2d3d3e3-f5f5-4a2e-af1b-0d0f0d0f0d0f', 'Submit report', 'Submit the monthly sales report', 'NO_COMENZADO', 'ALTA', '2024-11-10', NULL, 'a8b8c8d8-e8f8-4c8b-af23-0a0f0a0f0a0f'),
+('e3f4f5f6-f4f4-4b5c-bd3f-0e0f0e0f0e0f', 'Client meeting', 'Meet with client to discuss project goals', 'EN_PROGRESO', 'MEDIA', '2024-11-08', NULL, 'a8b8c8d8-e8f8-4c8b-af23-0a0f0a0f0a0f'),
+('f5f6f7f8-b5b5-4f6d-ac2e-0f0f0f0f0f0f', 'Team lunch', 'Arrange team lunch for Friday', 'TERMINADA', 'BAJA', '2024-11-05', '2024-11-05', 'a8b8c8d8-e8f8-4c8b-af23-0a0f0a0f0a0f'),
+('a1b2b3b4-f5f5-4d7e-ae3b-0a0f0a0f0a0f', 'Budget review', 'Review budget allocations for Q4', 'NO_COMENZADO', 'ALTA', '2024-11-11', NULL, 'a8b8c8d8-e8f8-4c8b-af23-0a0f0a0f0a0f'),
+('b2c3c4c5-b5b5-4a8e-af7f-0b0f0b0f0b0f', 'Send invoices', 'Send outstanding invoices to clients', 'EN_PROGRESO', 'MEDIA', '2024-11-15', NULL, 'a8b8c8d8-e8f8-4c8b-af23-0a0f0a0f0a0f');
 
 -- Tareas para Bob Smith
 INSERT INTO Tareas (id, title, description, state, prioridad, fecha_inicio, fecha_fin, user_id) VALUES
-('i2j3k4l5-m6n6-11ec-b939-0242ac120002', 'Code review', 'Review recent code changes', 'NO_COMENZADO', 'MEDIA', '2024-11-06 11:00:00', NULL, 'b9c9d9e9-f9g9-11ec-b939-0242ac120002'),
-('j4k5l6m7-n7o7-11ec-b939-0242ac120002', 'Project planning', 'Plan new project milestones', 'EN_PROGRESO', 'ALTA', '2024-11-07 10:00:00', NULL, 'b9c9d9e9-f9g9-11ec-b939-0242ac120002'),
-('k6l7m8n9-o8p8-11ec-b939-0242ac120002', 'Documentation', 'Update project documentation', 'TERMINADA', 'BAJA', '2024-11-01 09:00:00', '2024-11-01 10:30:00', 'b9c9d9e9-f9g9-11ec-b939-0242ac120002'),
-('l8m9n0o1-p9q9-11ec-b939-0242ac120002', 'Feedback session', 'Collect feedback from team', 'NO_COMENZADO', 'MEDIA', '2024-11-09 15:00:00', NULL, 'b9c9d9e9-f9g9-11ec-b939-0242ac120002'),
-('m9o1p2q3-q0r0-11ec-b939-0242ac120002', 'System upgrade', 'Schedule system maintenance', 'EN_PROGRESO', 'ALTA', '2024-11-13 10:00:00', NULL, 'b9c9d9e9-f9g9-11ec-b939-0242ac120002');
+('c3d4d5d6-e6e6-4c9e-bd4f-0c0f0c0f0c0f', 'Code review', 'Review recent code changes', 'NO_COMENZADO', 'MEDIA', '2024-11-06', NULL, 'b9c9d9e9-f9a9-4c9f-be3d-0b0f0b0f0b0f'),
+('d4e5f6f7-c7c7-4a0e-ab2d-0d0f0d0f0d0f', 'Project planning', 'Plan new project milestones', 'EN_PROGRESO', 'ALTA', '2024-11-07', NULL, 'b9c9d9e9-f9a9-4c9f-be3d-0b0f0b0f0b0f'),
+('e5f6a7b8-d8d8-4f1d-af3e-0e0f0e0f0e0f', 'Documentation', 'Update project documentation', 'TERMINADA', 'BAJA', '2024-11-01', '2024-11-01', 'b9c9d9e9-f9a9-4c9f-be3d-0b0f0b0f0b0f'),
+('f6a7b8c9-a9a9-4d2f-bc4d-0f0f0f0f0f0f', 'Feedback session', 'Collect feedback from team', 'NO_COMENZADO', 'MEDIA', '2024-11-09', NULL, 'b9c9d9e9-f9a9-4c9f-be3d-0b0f0b0f0b0f'),
+('a8b9c0d1-d1d1-4d3e-ab0f-0a0f0a0f0a0f', 'System upgrade', 'Schedule system maintenance', 'EN_PROGRESO', 'ALTA', '2024-11-13', NULL, 'b9c9d9e9-f9a9-4c9f-be3d-0b0f0b0f0b0f');
 
 -- Tareas para Charlie Brown
 INSERT INTO Tareas (id, title, description, state, prioridad, fecha_inicio, fecha_fin, user_id) VALUES
-('l3m9n0o1-p9q9-11ec-b939-0242ac120002', 'Design UI', 'Create new UI designs for the website', 'NO_COMENZADO', 'ALTA', '2024-11-12 09:00:00', NULL, 'c0d0e0f0-g0h0-11ec-b939-0242ac120002'),
-('m1o1p2q3-q0r0-11ec-b939-0242ac120002', 'Bug fixing', 'Fix bugs reported by the users', 'EN_PROGRESO', 'BAJA', '2024-11-14 14:00:00', NULL, 'c0d0e0f0-g0h0-11ec-b939-0242ac120002'),
-('n0p1q2r3-s0t0-11ec-b939-0242ac120002', 'API integration', 'Integrate new third-party API into the system', 'TERMINADA', 'MEDIA', '2024-11-02 08:30:00', '2024-11-02 09:30:00', 'c0d0e0f0-g0h0-11ec-b939-0242ac120002'),
-('o1p2q3r4-t1u1-11ec-b939-0242ac120002', 'User testing', 'Conduct user testing for the new features', 'NO_COMENZADO', 'ALTA', '2024-11-16 11:00:00', NULL, 'c0d0e0f0-g0h0-11ec-b939-0242ac120002'),
-('p2q3r4s5-u2v2-11ec-b939-0242ac120002', 'Project retrospective', 'Host a retrospective meeting with the team', 'EN_PROGRESO', 'MEDIA', '2024-11-17 10:00:00', NULL, 'c0d0e0f0-g0h0-11ec-b939-0242ac120002');
+('b1c2d3e4-f1f1-4a2e-af5b-0b0f0b0f0b0f', 'Design UI', 'Create new UI designs for the website', 'NO_COMENZADO', 'ALTA', '2024-11-12', NULL, 'c0d0e0f0-a0b0-4d0e-ab1f-0c0f0c0f0c0f'),
+('c2d3e4f5-e2e2-4b5e-bc3d-0c0f0c0f0c0f', 'Bug fixing', 'Fix bugs reported by the users', 'EN_PROGRESO', 'BAJA', '2024-11-14', NULL, 'c0d0e0f0-a0b0-4d0e-ab1f-0c0f0c0f0c0f'),
+('d3e4f5a6-a3a3-4f7d-af1e-0d0f0d0f0d0f', 'API integration', 'Integrate new third-party API into the system', 'TERMINADA', 'MEDIA', '2024-11-02', '2024-11-02', 'c0d0e0f0-a0b0-4d0e-ab1f-0c0f0c0f0c0f'),
+('e4f5a6b7-b4b4-4d0f-ab4c-0e0f0e0f0e0f', 'User testing', 'Conduct user testing for the new features', 'NO_COMENZADO', 'ALTA', '2024-11-16', NULL, 'c0d0e0f0-a0b0-4d0e-ab1f-0c0f0c0f0c0f'),
+('f5a6b7c8-c5c5-4d2e-bd0f-0f0f0f0f0f0f', 'Project retrospective', 'Host a retrospective meeting with the team', 'EN_PROGRESO', 'MEDIA', '2024-11-17', NULL, 'c0d0e0f0-a0b0-4d0e-ab1f-0c0f0c0f0c0f');

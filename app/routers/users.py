@@ -13,7 +13,7 @@ from app.models.models import Token, TokenData, Usuario, Usuario_db
 router = APIRouter(prefix="/users", tags=["Users"], responses={404: {"description": "Not found"}})
 
 @router.post("/", status_code=status.HTTP_201_CREATED)
-async def newUser(user: Usuario, db=Depends(get_db)):
+async def newUser(user: Usuario_db, db=Depends(get_db)):
     user.id = str(uuid.uuid4())
     bytes = user.password.encode('utf-8')
     salt = bcrypt.gensalt()
@@ -42,7 +42,8 @@ def get_user(username: str, db=Depends(get_db)):
     if res:
         # El doble asterisco el desempaquetado de diccionarios
         return Usuario_db(**res) # Esto es para que el modelo de datos sea compatible con el modelo de datos de la base de datos
-    
+    raise HTTPException(status_code=404, detail="User not found")
+   
 def authenticate_user(username: str, password: str, db=Depends(get_db)):
     user = get_user(username, db)
     if not user:

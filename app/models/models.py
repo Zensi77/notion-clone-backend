@@ -19,6 +19,7 @@ class Usuario(BaseModel):
     email: str
     
 class Usuario_db(Usuario):
+    id: str
     hashed_password: str
     
 class Token(BaseModel):

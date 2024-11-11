@@ -18,14 +18,15 @@ class Usuario(BaseModel):
     name: str
     email: str
     
-class Usuario_db(Usuario):
+class UsuarioRegister(Usuario):
+    password: str
+    
+class Usuario_db(UsuarioRegister):
     id: str
-    hashed_password: str
     
 class Token(BaseModel):
     access_token: str
     token_type: str
-
 
 class TokenData(BaseModel):
     username: str | None = None

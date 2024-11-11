@@ -72,8 +72,8 @@ async def create_access_token(data: dict, expires_delta: timedelta | None = None
     return encoded_jwt
 
 # Dependencia para validar el token de acceso
-@router.post('/check-token' , status_code=status.HTTP_200_OK, response_model=Token)
-async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
+@router.post('/check-token' , status_code=status.HTTP_200_OK, response_model=Usuario)
+async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)], db=Depends(get_db)):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
         detail="Could not validate credentials",
@@ -82,13 +82,14 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     try:
         # El payload es el contenido del token
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
-        username: str = payload.get("sub") 
-        if username is None:
+        email: str = payload.get("email") 
+        print(email)
+        if email is None:
             raise credentials_exception
-        token_data = TokenData(username=username)
+        token_data = TokenData(username=email) # Se crea el modelo de datos del token
     except jwt.InvalidTokenError:
         raise credentials_exception
-    user = await get_user(username=token_data.username, db=Depends(get_db))
+    user = await get_user(username=token_data.username, db=db)
     if user is None:
         raise credentials_exception
     return user

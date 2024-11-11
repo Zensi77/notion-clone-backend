@@ -15,14 +15,13 @@ class Prioridad(str, Enum):
     ALTA = "Alta"
     
 class Usuario(BaseModel):
+    id: Optional[str] = None
     name: str
     email: str
     
 class UsuarioRegister(Usuario):
     password: str
     
-class Usuario_db(UsuarioRegister):
-    id: str
     
 class Token(BaseModel):
     access_token: str

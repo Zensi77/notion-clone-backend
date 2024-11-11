@@ -8,12 +8,12 @@ import uuid
 import bcrypt
 
 from app.db.db import get_db
-from app.models.models import Token, TokenData, Usuarios, Usuario_db, UsuarioRegister
+from app.models.models import Token, TokenData, Usuarios, UsuarioRegister, Usuario
 
 router = APIRouter(prefix="/users", tags=["Users"], responses={404: {"description": "Not found"}})
 
-@router.post("/", status_code=status.HTTP_201_CREATED, response_model=Usuario_db)
-async def new_user(user: UsuarioRegister, db: Session=Depends(get_db)) -> Usuario_db:
+@router.post("/", status_code=status.HTTP_201_CREATED, response_model=Usuario)
+async def new_user(user: UsuarioRegister, db: Session=Depends(get_db)) -> Usuario:
     bytes = user.password.encode('utf-8')
     salt = bcrypt.gensalt()
     hashed_password = bcrypt.hashpw(bytes, salt)
@@ -42,8 +42,9 @@ async def verify_password(plain_password, hashed_password):
 def get_password_hash(password):
     return pwd_context.hash(password)
 
+# Se valida el usuario por el email
 async def get_user(username: str, db: Session=Depends(get_db)):
-    res = db.query(Usuarios).filter(Usuarios.name == username).first()
+    res = db.query(Usuarios).filter(Usuarios.email == username).first()
     if res:
         # El doble asterisco el desempaquetado de diccionarios
         return res
@@ -71,6 +72,7 @@ async def create_access_token(data: dict, expires_delta: timedelta | None = None
     return encoded_jwt
 
 # Dependencia para validar el token de acceso
+@router.post('/check-token' , status_code=status.HTTP_200_OK, response_model=Token)
 async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
     credentials_exception = HTTPException(
         status_code=status.HTTP_401_UNAUTHORIZED,
@@ -78,7 +80,7 @@ async def get_current_user(token: Annotated[str, Depends(oauth2_scheme)]):
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        # el payload es el contenido del token
+        # El payload es el contenido del token
         payload = jwt.decode(token, SECRET_KEY, algorithms=[ALGORITHM])
         username: str = payload.get("sub") 
         if username is None:
@@ -106,6 +108,7 @@ async def login_for_access_token(
         )
     access_token_expires = timedelta(minutes=ACCESS_TOKEN_EXPIRE_MINUTES)
     access_token = await create_access_token(
-        data={"sub": user.name}, expires_delta=access_token_expires
+        data={"sub": user.name, "email": user.email, "id": user.id}, 
+        expires_delta=access_token_expires
     )
-    return Token(access_token=access_token, token_type="bearer")   
+    return Token(access_token=access_token, token_type="bearer")

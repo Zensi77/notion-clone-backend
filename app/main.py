@@ -7,7 +7,7 @@ import app.models.models as modelos
 from app.routers import users
 from app.routers import tasks
 
-app = FastAPI()
+app = FastAPI(title="API de tareas", description="API para la gestión de tareas", version="1.0.0")
 
 app.include_router(users.router)
 app.include_router(tasks.router)

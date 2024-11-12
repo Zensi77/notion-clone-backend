@@ -3,8 +3,14 @@ from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 from app.db.db import get_db
 from app.models.models import Tareas, Task, TaskCreate
+from app.routers.auth_basic import VerifyTokenRoute
 
-router = APIRouter(prefix="/tasks", tags=["Tasks"], responses={404: {"description": "Not found"}})
+router = APIRouter(
+    prefix="/tasks", 
+    tags=["Tasks"], 
+    responses={404: {"description": "Not found"}},
+    route_class=VerifyTokenRoute # Se agrega la clase VerifyTokenRoute para verificar el token
+    )
 
 @router.get("/{user_id}", status_code=status.HTTP_200_OK, response_model=list[Task])
 async def get_tasks(user_id: str, db=Depends(get_db))->list[Task]:

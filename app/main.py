@@ -1,6 +1,5 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-from fastapi.staticfiles import StaticFiles
 
 from app.db.db import engine
 import app.models.models as modelos
@@ -11,7 +10,6 @@ app = FastAPI(title="API de tareas", description="API para la gestión de tareas
 
 app.include_router(users.router)
 app.include_router(tasks.router)
-# app.mount("/static", StaticFiles(directory="app/static"), name="static") # Incluye la carpeta static para mosrtarla en el navegador
 modelos.Base.metadata.create_all(bind=engine) # Crea las tablas en la base de datos
 
 origins = [

@@ -24,7 +24,6 @@ async def new_user(user: UsuarioRegister, db: Session=Depends(get_db)) -> Usuari
         name = user.name,
         email = user.email
     )
-    
     db.add(user_data)
     db.commit()
     db.refresh(user_data)

@@ -28,8 +28,8 @@ async def get_task(task_id: str, db=Depends(get_db)) -> Task:
         return Task.model_validate(res)
     raise HTTPException(status_code=404, detail='Task not found')
     
-@router.post('/', status_code=status.HTTP_201_CREATED, response_model=Task)
-async def create_task(task: TaskCreate, db=Depends(get_db)) -> Task:
+@router.post('/', status_code=status.HTTP_201_CREATED, response_model=TaskCreate)
+async def create_task(task: TaskCreate, db=Depends(get_db)) -> TaskCreate:
     task_data = Tareas(
         id=str(uuid.uuid4()),
         title=task.title,
@@ -43,7 +43,7 @@ async def create_task(task: TaskCreate, db=Depends(get_db)) -> Task:
     db.add(task_data)
     db.commit()
     db.refresh(task_data)
-    return Task.model_validate(task_data) # Se devuelve el modelo de datos de la tarea con el id generado
+    return task_data # Se devuelve el modelo de datos de la tarea con el id generado
 
 @router.delete('/{task_id}', status_code=status.HTTP_200_OK, response_model=Task)
 async def delete_task(task_id: str, db=Depends(get_db)) -> Task:

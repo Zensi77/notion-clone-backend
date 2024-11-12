@@ -3,13 +3,15 @@ from fastapi.middleware.cors import CORSMiddleware
 
 from app.db.db import engine
 import app.models.models as modelos
-from app.routers import users
+from app.routers import shared, users, websocket
 from app.routers import tasks
 
 app = FastAPI(title="API de tareas", description="API para la gestión de tareas", version="1.0.0")
 
 app.include_router(users.router)
 app.include_router(tasks.router)
+app.include_router(shared.router)
+app.include_router(websocket.router)
 modelos.Base.metadata.create_all(bind=engine) # Crea las tablas en la base de datos
 
 origins = [

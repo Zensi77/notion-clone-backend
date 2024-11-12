@@ -42,8 +42,9 @@ class TaskCreate(BaseModel):
 class Task(TaskCreate):
     id: str 
 
-    class Config: # Esto hace que el modelo de datos se pueda convertir a un diccionario
-        from_attributes = True
+class SharedTaskCreate(BaseModel):
+    task_id: int
+    user_id: int
             
 from sqlalchemy import Column, Date, String, Enum, ForeignKey, func, CHAR
 from sqlalchemy.orm import relationship
@@ -72,4 +73,11 @@ class Tareas(Base):
     user_id = Column(CHAR(36), ForeignKey('Usuarios.id'))
     
     user = relationship('Usuarios', back_populates='tareas')
+    
+class TaskSharedDB(Base):
+    __tablename__ = 'Tareas Compartidas'
+    
+    id=Column(CHAR(36), primary_key=True, default=lambda: str(uuid4()), index=True)
+    id_task=Column(CHAR(36), ForeignKey('Tareas.id'))
+    id_usuario=Column(CHAR(36), ForeignKey('Usuarios.id'))
     

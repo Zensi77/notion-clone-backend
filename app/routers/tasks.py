@@ -2,7 +2,7 @@ import uuid
 from fastapi import APIRouter, Depends, HTTPException
 from starlette import status
 from app.db.db import get_db
-from app.models.models import Tareas, Task, TaskCreate
+from app.models.models import Tareas, Task, TaskCreate, Usuario, Usuarios
 from app.routers.auth_basic import VerifyTokenRoute
 
 router = APIRouter(
@@ -25,7 +25,7 @@ async def get_tasks(user_id: str, db=Depends(get_db))->list[Task]:
 async def get_task(task_id: str, db=Depends(get_db)) -> Task:
     res = db.query(Tareas).filter(Tareas.id == task_id).first()
     if res:
-        return Task.model_validate(res)
+        return res
     raise HTTPException(status_code=404, detail='Task not found')
     
 @router.post('/', status_code=status.HTTP_201_CREATED, response_model=TaskCreate)
@@ -72,3 +72,12 @@ async def update_task(task_edit: Task,  db=Depends(get_db)):
     if response:
         return response
     raise HTTPException(status_code=404, detail='Task not found')
+
+@router.get('/user/{task_id}', status_code=status.HTTP_200_OK, response_model=Usuario)
+def get_user_creater(task_id: str, db=Depends(get_db)) -> Usuario:
+    res = db.query(Tareas).filter(Tareas.id == task_id).first()
+    if res:
+        user = db.query(Usuarios).filter(Usuarios.id == res.user_id).first()
+        # __dict__ es un atributo de los objetos que devuelve un diccionario con los atributos del objeto
+        return Usuario(**user.__dict__) # Desempaquetado de diccionario
+    raise HTTPException(status_code=404, detail='User creator not found')

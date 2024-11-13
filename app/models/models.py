@@ -41,7 +41,7 @@ class Task(TaskCreate):
     id: str 
 
 class SharedTaskCreate(BaseModel):
-    task_id: int
+    task_id: str
     email: str
             
 from sqlalchemy import Column, Date, String, Enum, ForeignKey, func, CHAR

@@ -8,14 +8,14 @@ router = APIRouter(
 
 manager = ConnectionManager()
 
-@router.websocket("/ws/{client_id}")
-async def websocket_endpoint(websocket: WebSocket, tarea_id: str, usuario_id:str ):
-    await manager.connect(websocket)
+@router.websocket("/{user}")
+async def websocket_endpoint(websocket: WebSocket, tarea_id: str, user:str ):
+    await manager.connect(websocket) # Se conecta el usuario al websocket
     try:
         while True:
             data = await websocket.receive_text()
             await manager.send_personal_message(f"You wrote: {data}", websocket)
-            await manager.broadcast(f"Client #{usuario_id} says: {data}")
+            await manager.broadcast(f"Client #{user} says: {data}")
     except WebSocketDisconnect:
         manager.disconnect(websocket)
-        await manager.broadcast(f"Client #{usuario_id} left the chat")
+        await manager.broadcast(f"Client #{user} left the chat")

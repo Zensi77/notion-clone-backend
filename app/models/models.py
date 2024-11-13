@@ -3,7 +3,6 @@ from enum import Enum
 from typing import Optional
 from pydantic import BaseModel
 
-# Clases de los modelos de la base de datos    
 class Estado(str, Enum):
     NO_COMENZADO = "No comenzado"
     EN_PROGRESO = "En progreso"
@@ -20,8 +19,7 @@ class Usuario(BaseModel):
     email: str
     
 class UsuarioRegister(Usuario):
-    password: str
-    
+    password: str 
     
 class Token(BaseModel):
     access_token: str
@@ -44,7 +42,7 @@ class Task(TaskCreate):
 
 class SharedTaskCreate(BaseModel):
     task_id: int
-    user_id: int
+    email: str
             
 from sqlalchemy import Column, Date, String, Enum, ForeignKey, func, CHAR
 from sqlalchemy.orm import relationship

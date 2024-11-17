@@ -29,6 +29,14 @@ async def new_user(user: UsuarioRegister, db: Session=Depends(get_db)) -> Usuari
     db.refresh(user_data)
     return user_data
 
+@router.post('/check-email', status_code=status.HTTP_200_OK)
+async def check_email(email: str, db: Session=Depends(get_db))->bool:
+    res = db.query(Usuarios).filter(Usuarios.email == email).first()
+    if res:
+        return False # El email ya existe
+    return True # El email no existe
+        
+
 from passlib.context import CryptContext
 from fastapi.security import OAuth2PasswordBearer, OAuth2PasswordRequestForm
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")

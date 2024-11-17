@@ -1,5 +1,6 @@
 {
-    "python.analysis.extraPaths": [
-        "./notion-clone"
-    ]
+  "python.analysis.extraPaths": [
+    "./notion-clone"
+  ],
+  "peacock.color": "pink"
 }

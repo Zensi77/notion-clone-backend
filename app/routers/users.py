@@ -29,7 +29,7 @@ async def new_user(user: UsuarioRegister, db: Session=Depends(get_db)) -> Usuari
     db.refresh(user_data)
     return user_data
 
-@router.post('/check-email', status_code=status.HTTP_200_OK)
+@router.get('/check-email', status_code=status.HTTP_200_OK)
 async def check_email(email: str, db: Session=Depends(get_db))->bool:
     res = db.query(Usuarios).filter(Usuarios.email == email).first()
     if res:

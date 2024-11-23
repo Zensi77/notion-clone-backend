@@ -11,18 +11,36 @@ router = APIRouter(
     responses={404: {"description": "Not found"}},
     )
 
-@router.get('/{user_id}', status_code=status.HTTP_200_OK, response_model=list[Task])
-def get_list_shared(user_id: str, db=Depends(get_db)) -> list[Task]:
-    # TODO Validacion de que el usuario a agregar no sea el mismo que la creó o que ya esté en la lista
+class TaskShare(Task):
+    task: Task
+    creator: Usuario
+
+@router.get('/{user_id}', status_code=status.HTTP_200_OK, response_model=list[TaskShare])
+def get_list_shared(user_id: str, db=Depends(get_db)) -> list[TaskShare]:
     res = db.query(TaskSharedDB).filter(TaskSharedDB.id_usuario == user_id)
-    taskList = []
+    user = db.query(Usuarios).filter(Usuarios.id == user_id).first()
+    taskList: list[TaskShare] = []
     if not res:
         return taskList
     
     for item in res:
         task = db.query(Tareas).filter(Tareas.id == item.id_task).first()
-        taskList.append(task)
-    
+        taskList.append({
+                        "task": {
+                            "id": task.id,
+                            "title": task.title,
+                            "description": task.description,
+                            "state": task.state,
+                            "prioridad": task.prioridad,
+                            "fecha_inicio": task.fecha_inicio,
+                            "user_id": task.user_id,
+                        },
+                        "creator": {
+                            "id": user.id,
+                            "name": user.name,
+                            "email": user.email,
+                        }
+                    })    
     return taskList
 
 @router.post('/{user_id}', status_code=status.HTTP_201_CREATED, response_model=SharedTaskCreate)

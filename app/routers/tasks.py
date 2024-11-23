@@ -73,11 +73,9 @@ async def update_task(task_edit: Task,  db=Depends(get_db)):
         return response
     raise HTTPException(status_code=404, detail='Task not found')
 
-@router.get('/user/{task_id}', status_code=status.HTTP_200_OK, response_model=Usuario)
-def get_user_creater(task_id: str, db=Depends(get_db)) -> Usuario:
-    res = db.query(Tareas).filter(Tareas.id == task_id).first()
-    if res:
-        user = db.query(Usuarios).filter(Usuarios.id == res.user_id).first()
-        # __dict__ es un atributo de los objetos que devuelve un diccionario con los atributos del objeto
-        return Usuario(**user.__dict__) # Desempaquetado de diccionario
+@router.get('/user/{user_id}', status_code=status.HTTP_200_OK, response_model=Usuario)
+def get_user_creater(user_id: str, db=Depends(get_db)) -> Usuario:
+    user = db.query(Usuarios).filter(Usuarios.id == user_id).first()
+    if user:
+        return Usuario(**user.__dict__)
     raise HTTPException(status_code=404, detail='User creator not found')

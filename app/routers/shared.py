@@ -1,5 +1,6 @@
 import uuid
 from fastapi import APIRouter, Depends, HTTPException
+from pydantic import BaseModel
 from starlette import status
 from app.db.db import get_db
 from app.models.models import SharedTaskCreate, Tareas, Task, TaskSharedDB, Usuario, Usuarios
@@ -8,39 +9,38 @@ from app.routers.auth_basic import VerifyTokenRoute
 router = APIRouter(
     prefix="/shared", 
     tags=["Shared"], 
-    responses={404: {"description": "Not found"}},
     )
 
-class TaskShare(Task):
+class TaskShare(BaseModel):
     task: Task
     creator: Usuario
 
 @router.get('/{user_id}', status_code=status.HTTP_200_OK, response_model=list[TaskShare])
 def get_list_shared(user_id: str, db=Depends(get_db)) -> list[TaskShare]:
-    res = db.query(TaskSharedDB).filter(TaskSharedDB.id_usuario == user_id)
-    user = db.query(Usuarios).filter(Usuarios.id == user_id).first()
+    res = db.query(TaskSharedDB).filter(TaskSharedDB.id_usuario == user_id).all()
     taskList: list[TaskShare] = []
     if not res:
         return taskList
     
     for item in res:
         task = db.query(Tareas).filter(Tareas.id == item.id_task).first()
-        taskList.append({
-                        "task": {
-                            "id": task.id,
-                            "title": task.title,
-                            "description": task.description,
-                            "state": task.state,
-                            "prioridad": task.prioridad,
-                            "fecha_inicio": task.fecha_inicio,
-                            "user_id": task.user_id,
-                        },
-                        "creator": {
-                            "id": user.id,
-                            "name": user.name,
-                            "email": user.email,
-                        }
-                    })    
+        user = db.query(Usuarios).filter(Usuarios.id == task.user_id).first()
+        item_data = Task(
+            id = task.id,
+            title = task.title,
+            description = task.description,
+            state = task.state,
+            prioridad = task.prioridad,
+            fecha_inicio = task.fecha_inicio,
+            fecha_fin = task.fecha_fin,
+            user_id = task.user_id
+        )
+        user_data = Usuario(
+            id = user.id,
+            name = user.name,
+            email = user.email
+        )
+        taskList.append(TaskShare(task=item_data, creator=user_data))
     return taskList
 
 @router.post('/{user_id}', status_code=status.HTTP_201_CREATED, response_model=SharedTaskCreate)
@@ -74,3 +74,12 @@ def create_shared_task(user_id:str, shared: SharedTaskCreate, db=Depends(get_db)
     db.refresh(data)
     
     return shared
+
+@router.delete('/{task_id}', status_code=status.HTTP_200_OK)
+def delete_shared_task(task_id: str, db=Depends(get_db)):
+    res = db.query(TaskSharedDB).filter(TaskSharedDB.id_task == task_id)
+    if res:
+        res.delete()
+        db.commit()
+        return {'message': 'Task deleted successfully'}
+    raise HTTPException(status_code=404, detail='Task not found')

@@ -8,8 +8,9 @@ from app.routers.auth_basic import VerifyTokenRoute
 
 router = APIRouter(
     prefix="/shared", 
-    tags=["Shared"], 
-    )
+    tags=["Shared"],
+    route_class=VerifyTokenRoute
+)
 
 class TaskShare(BaseModel):
     task: Task

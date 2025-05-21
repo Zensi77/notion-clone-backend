@@ -6,6 +6,10 @@ import app.models.models as modelos
 from app.routers import shared, users, websocket
 from app.routers import tasks
 
+import dotenv
+
+dotenv.load_dotenv()
+
 app = FastAPI(title="API de tareas", description="API para la gestión de tareas", version="1.0.0")
 
 app.include_router(users.router)
@@ -15,10 +19,7 @@ app.include_router(websocket.router)
 modelos.Base.metadata.create_all(bind=engine) # Crea las tablas en la base de datos
 
 origins = [
-    "http://localhost.tiangolo.com",
-    "https://localhost.tiangolo.com",
-    "http://localhost",
-    "http://localhost:4200",
+    dotenv.get_key("CORS_ORIGIN"),
 ]
 app.add_middleware(
     CORSMiddleware,

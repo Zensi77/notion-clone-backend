@@ -8,8 +8,6 @@ from app.routers import tasks
 
 import os
 
-dotenv.load_dotenv()
-
 app = FastAPI(title="API de tareas", description="API para la gestión de tareas", version="1.0.0")
 
 app.include_router(users.router)

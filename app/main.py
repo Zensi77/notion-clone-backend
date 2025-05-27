@@ -16,12 +16,11 @@ app.include_router(shared.router)
 app.include_router(websocket.router)
 modelos.Base.metadata.create_all(bind=engine) # Crea las tablas en la base de datos
 
-origins = [
-    os.getenv("CORS_ORIGIN")
-]
+origins = [os.getenv("CORS_ORIGIN"), "http://localhost:4200"]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[origins, "http://localhost:4200"],
+    allow_origins=origins,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],

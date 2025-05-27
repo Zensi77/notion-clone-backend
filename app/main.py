@@ -6,7 +6,7 @@ import app.models.models as modelos
 from app.routers import shared, users, websocket
 from app.routers import tasks
 
-import dotenv
+import os
 
 dotenv.load_dotenv()
 
@@ -19,11 +19,11 @@ app.include_router(websocket.router)
 modelos.Base.metadata.create_all(bind=engine) # Crea las tablas en la base de datos
 
 origins = [
-    dotenv.get_key("CORS_ORIGIN"),
+    os.getenv("CORS_ORIGIN")
 ]
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=[origins, "http://localhost:4200"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
